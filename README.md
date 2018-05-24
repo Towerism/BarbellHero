@@ -8,4 +8,4 @@
 Run `docker-compose up`. Access the website at `localhost:5000`.
 
 ## Deploy
-Run `docker-compose -f docker-compose.yml -f docker-compose.production.yml build`
+Run `heroku container:push web -a <YOUR APP>`
