@@ -20,7 +20,6 @@ services:
       - db
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - DOCKER_CLIENT=True
     command: dotnet watch run
     ports:
       - 5000:80
