@@ -1,6 +1,5 @@
 FROM microsoft/aspnetcore:2.0 AS base
 WORKDIR /app
-EXPOSE 80
 
 FROM microsoft/aspnetcore-build:2.0 AS restore
 WORKDIR /src
@@ -12,8 +11,11 @@ COPY . .
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish
+RUN npm install -g yarn
 RUN dotnet publish -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+ENV PORT 80
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet BarbellHero.dll

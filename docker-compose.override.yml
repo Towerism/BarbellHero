@@ -20,9 +20,12 @@ services:
       - db
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - PORT=${PORT:-80}
+      - ASPNETCORE_URLS=http://*:$PORT 
+    entrypoint: ./entrypoint.sh
     command: dotnet watch run
     ports:
-      - 5000:80
+      - "5000:${PORT:-80}"
     volumes:
       - .:/src
       - /src/obj
