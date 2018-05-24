@@ -7,12 +7,12 @@ services:
       dockerfile: ./Dockerfile
     environment:
       - NODE_ENV=development
-    command: npm start -- --poll=100 --host 0.0.0.0 --disableHostCheck
+    command: yarn start --poll=100 --host 0.0.0.0 --disableHostCheck
     ports:
       - 4200:4200
     volumes:
-      - ./ClientApp:/src
-      - /src/ClientApp/node_modules
+      - ./ClientApp:/home/app
+      - ./home/app/node_modules
   web:
     build:
       target: restore

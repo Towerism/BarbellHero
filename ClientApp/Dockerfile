@@ -1,8 +1,6 @@
-FROM mhart/alpine-node:latest AS deps
-WORKDIR /src
-RUN apk add --no-cache make gcc g++ python2
-
-FROM deps AS dev
-COPY ./package*.json ./
-RUN npm install
+FROM node:latest AS deps
+ENV HOME=/home/app
+WORKDIR $HOME
+COPY package.json yarn.lock ./
+RUN yarn
 EXPOSE 4200
