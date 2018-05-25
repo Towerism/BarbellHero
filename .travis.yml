@@ -1,17 +1,20 @@
 language: generic
 services:
-- docker
+  - docker
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 script:
-- docker build -t barbellhero_client_test ClientApp
-- docker run barbellhero_client_test ng test --single-run
-- docker-compose up -d && sleep 10000
-- docker run --net host barbellhero_client_test ng e2e --serve false --host 0.0.0.0 --port 5000
-- docker-compose down
-- docker login -u "$HEROKU_USER" -p "$HEROKU_TOKEN" registry.heroku.com
-- docker build -t barbellhero .
-- docke tag barbellhero registry.heroku.com/barbellhero/web
-- docker push registry.heroku.com/barbellhero/web
+  - docker build -t barbellhero_client_test ClientApp
+  - docker run barbellhero_client_test ng test --single-run
+  - docker-compose up -d && sleep 10
+  - docker run --net host barbellhero_client_test ng e2e --serve false --host 0.0.0.0 --port 5000
+  - docker-compose down
+  - docker login -u "$HEROKU_USER" -p "$HEROKU_TOKEN" registry.heroku.com
+  - docker build -t barbellhero .
+  - docke tag barbellhero registry.heroku.com/barbellhero/web
+  - docker push registry.heroku.com/barbellhero/web
 env:
   global:
-  - secure: K0IWw9tS4bHRkxrPuAY6kD/paKlh4a5OsZsA72VGpHrXgXQ02j6kkF8Wu3Ri2zhnEBqj9Mt4haJANGJkvxlS2bPVFP2w0LsxtQQrZ86siJ21bSp2Nw+7CG/IZL4aNF7RrMPPcZ0+HqLu7uPHxHJYGLY6mCmXoSBXP2NbMGbmXakTOOa6sEGe8EKemvuRDQmbN16zc11FdhTVCIIFBb1vRGK/E1UTIZDoIlAToqEth+JVx0A+rslfCbei4V7VI/Rx/hglPsc+XYRjqIyw0cZbooLdUoZWGfgt6hcls0uccgrLQ7cGtNQ+kqbSyp7Egu+a9XE+In9O7Mp2tkHVq5gwdG774LJPevxdj2re9zs7M1TYrUZ7hjSsusVjaaHsouw1grvmrKzFYzyAbzl6sELcTYfkpp5OT4VxCv+ylcpZ2CN931KYbxur21jCecHiI1+sNkQvsb2IL1w0zihujq6d57jcocYhKztqWnDDHuQHkEIHE/0U/7gC7kiy9Bi9Hyy0OnZyWw5fwICf6jokNJXOmMQKbEWq+MQo/2aUmsXFdGdfnliERz8WQllkiWT9EU2hgHeLXnu9gJ7mZjKmo+1LZa1liSvTc5nDKJPFOLfZWNWaxDvaNb376ImIepiZCOe2MNv3SaG/UJzm7DKe0WnNlK1AuHGmXUstRLoRLH1/pGw=
-  - secure: lipCw4P4YEaO0iXd8GpNtKoiHfMg7o7Bl3WPCBfqbYAzzG05BNV9gJFrzx7qlyTROvqL3xKk1jqWtrTOHqgtroyRISC/yunc9vYI3PYtXmISFuVTdPpEc9Ms+LrExupbX5AliJbb8Rsm21TN8lHzUNgSbphnawdjN3nJD6nmgIDtqhPlTFP3/6g8mPjOdrVQviIzbly9+1IZeDk7PQz9Qx94WBx0OlYOUbamRXpO56jsV66fsPAVpc+48LCZhfYp+/om3pHqXFmYeUFzDvPE5HMQpyeXNPhkVn3th/cPib+SquCaIYAZwJ0baoLxHU4Z60JYwV7z1wV3gCfrDMMd48rKhmSKk6koN2yaOFjqyM12A8gckWiNjkGBPLgHmAF6/aI9j6dARme8pSidHilCcbugn0E+SA7taXo2ivJtcOjun6WOJ1ANXu0JFM2/HAXXb4pPQyUkpFyV+YJqvhzYMsfdV/jIvMg3ATIV7I/6KJbDQx6T+QZ+Z3Q55pvmdM2ZKoq/353Dg7IpD5IM1ZmamVmZNszQTxCgWpvt1LBbPRwn52hqrRB+5gbuMACAzxOu1AnVfUOllNDeOJDe5Q/4vs4+4EHywrWU5vO8vUPaVJwfwa48SQAwQ928giOr6BwVo3ORl6IyUo8HwWro7usG0mSXinVf/4iRPd0DYv+rUJg=
+    - secure: K0IWw9tS4bHRkxrPuAY6kD/paKlh4a5OsZsA72VGpHrXgXQ02j6kkF8Wu3Ri2zhnEBqj9Mt4haJANGJkvxlS2bPVFP2w0LsxtQQrZ86siJ21bSp2Nw+7CG/IZL4aNF7RrMPPcZ0+HqLu7uPHxHJYGLY6mCmXoSBXP2NbMGbmXakTOOa6sEGe8EKemvuRDQmbN16zc11FdhTVCIIFBb1vRGK/E1UTIZDoIlAToqEth+JVx0A+rslfCbei4V7VI/Rx/hglPsc+XYRjqIyw0cZbooLdUoZWGfgt6hcls0uccgrLQ7cGtNQ+kqbSyp7Egu+a9XE+In9O7Mp2tkHVq5gwdG774LJPevxdj2re9zs7M1TYrUZ7hjSsusVjaaHsouw1grvmrKzFYzyAbzl6sELcTYfkpp5OT4VxCv+ylcpZ2CN931KYbxur21jCecHiI1+sNkQvsb2IL1w0zihujq6d57jcocYhKztqWnDDHuQHkEIHE/0U/7gC7kiy9Bi9Hyy0OnZyWw5fwICf6jokNJXOmMQKbEWq+MQo/2aUmsXFdGdfnliERz8WQllkiWT9EU2hgHeLXnu9gJ7mZjKmo+1LZa1liSvTc5nDKJPFOLfZWNWaxDvaNb376ImIepiZCOe2MNv3SaG/UJzm7DKe0WnNlK1AuHGmXUstRLoRLH1/pGw=
+    - secure: lipCw4P4YEaO0iXd8GpNtKoiHfMg7o7Bl3WPCBfqbYAzzG05BNV9gJFrzx7qlyTROvqL3xKk1jqWtrTOHqgtroyRISC/yunc9vYI3PYtXmISFuVTdPpEc9Ms+LrExupbX5AliJbb8Rsm21TN8lHzUNgSbphnawdjN3nJD6nmgIDtqhPlTFP3/6g8mPjOdrVQviIzbly9+1IZeDk7PQz9Qx94WBx0OlYOUbamRXpO56jsV66fsPAVpc+48LCZhfYp+/om3pHqXFmYeUFzDvPE5HMQpyeXNPhkVn3th/cPib+SquCaIYAZwJ0baoLxHU4Z60JYwV7z1wV3gCfrDMMd48rKhmSKk6koN2yaOFjqyM12A8gckWiNjkGBPLgHmAF6/aI9j6dARme8pSidHilCcbugn0E+SA7taXo2ivJtcOjun6WOJ1ANXu0JFM2/HAXXb4pPQyUkpFyV+YJqvhzYMsfdV/jIvMg3ATIV7I/6KJbDQx6T+QZ+Z3Q55pvmdM2ZKoq/353Dg7IpD5IM1ZmamVmZNszQTxCgWpvt1LBbPRwn52hqrRB+5gbuMACAzxOu1AnVfUOllNDeOJDe5Q/4vs4+4EHywrWU5vO8vUPaVJwfwa48SQAwQ928giOr6BwVo3ORl6IyUo8HwWro7usG0mSXinVf/4iRPd0DYv+rUJg=
