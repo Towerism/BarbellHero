@@ -1,6 +1,8 @@
 #!/bin/bash
 
-if [ -z "$E2E" ]; then
+set -x
+
+if [ $E2E -eq 0 ]; then
   docker build -t barbellhero_client_test ClientApp
   docker run barbellhero_client_test ng test --single-run
   testResult=$?
