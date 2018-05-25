@@ -5,6 +5,7 @@ services:
     build:
       context: ./ClientApp
       dockerfile: ./Dockerfile
+      target: deps
     environment:
       - NODE_ENV=development
     command: yarn start --poll=100 --host 0.0.0.0 --disableHostCheck

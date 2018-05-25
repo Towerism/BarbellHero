@@ -2,9 +2,14 @@ language: generic
 services:
 - docker
 script:
+- docker build -t barbellhero_client_test ClientApp
+- docker run barbellhero_client_test ng test --single-run
+- docker-compose up -d && sleep 10000
+- docker run --net host barbellhero_client_test ng e2e --serve false --host 0.0.0.0 --port 5000
+- docker-compose down
 - docker login -u "$HEROKU_USER" -p "$HEROKU_TOKEN" registry.heroku.com
 - docker build -t barbellhero .
-- docker tag barbellhero registry.heroku.com/barbellhero/web
+- docke tag barbellhero registry.heroku.com/barbellhero/web
 - docker push registry.heroku.com/barbellhero/web
 env:
   global:
