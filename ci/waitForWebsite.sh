@@ -1,19 +1,19 @@
 #!/bin/bash
 
-responseCode=""
+code=-1
 tries=0
 api=http://localhost:$PORT
 printf "Connecting to $api"
-while [ "$responseCode" != "200" ]; do
-  responseCode=$(curl -o /dev/null -s -w "%{http_code}" $api)
+while [[ "$code" -ne "0" ]]; do
+  code=$(curl -so /dev/null --fail $api && echo 0 || echo 1)
   ((tries++))
   printf "."
-  sleep 1
-  if [ $tries == 30 ]; then
+  if [[ "$tries" -eq "60" ]]; then
     printf "Failed\n"
     >&2 echo "Could not connect to $api successfully"
     exit 1
   fi
+  sleep 1
 done
 printf "Connected!\n"
 exit 0
