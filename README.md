@@ -1,4 +1,4 @@
-# Barbell Hero
+# Barbell Hero [![Build Status](https://travis-ci.org/Towerism/BarbellHero.svg?branch=master)](https://travis-ci.org/Towerism/BarbellHero)
 > A strength programming web application to help you meet your fitness goals.
 
 ## Requirements

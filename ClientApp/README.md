@@ -1,4 +1,4 @@
-# BarbellHero [![Build Status](https://travis-ci.org/Towerism/BarbellHero.svg?branch=master)](https://travis-ci.org/Towerism/BarbellHero)
+# BarbellHero
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.0.
 
