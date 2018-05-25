@@ -9,7 +9,7 @@ while [ "$responseCode" != "200" ]; do
   ((tries++))
   printf "."
   sleep 1
-  if [ $tries == 60 ]; then
+  if [ $tries == 1 ]; then
     printf "Failed\n"
     >&2 echo "Could not connect to $api successfully"
     exit 1
