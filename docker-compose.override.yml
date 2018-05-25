@@ -1,4 +1,4 @@
-version: '3.6'
+version: '3.4'
 
 services:
   client:
@@ -23,8 +23,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - PORT=${PORT:-80}
       - ASPNETCORE_URLS=http://*:$PORT 
-    entrypoint: ./entrypoint.sh
-    command: dotnet watch run
+    entrypoint: dotnet watch run
     ports:
       - "5000:${PORT:-80}"
     volumes:

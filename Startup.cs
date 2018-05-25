@@ -44,6 +44,11 @@ namespace BarbellHero
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<BarbellHeroDbContext>();
+                context.Database.Migrate();
+            }
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
