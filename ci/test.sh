@@ -2,7 +2,7 @@
 
 set -ex
 
-docker build -t barbellhero_client_test ClientApp
+docker build -t barbellhero_client_test ./BarbellHero/ClientApp
 docker run barbellhero_client_test ng test --single-run
 export PORT=3000
 

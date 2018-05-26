@@ -1,28 +1,47 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using BarbellHero.Repository;
+using BarbellHero.Repositories;
+using System;
+using BarbellHero.Repositories.Interfaces;
+using Mapster;
 
 namespace BarbellHero
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env, IConfiguration configuration)
         {
+            HostingEnvironment = env;
             Configuration = configuration;
         }
+
+        public IHostingEnvironment HostingEnvironment { get; }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFrameworkNpgsql()
-                .AddDbContext<BarbellHeroDbContext>(options =>
-                    options.UseNpgsql(Configuration["Data:DbContext:ConnectionString"]));
+            if (HostingEnvironment.IsDevelopment())
+            {
+                services.AddEntityFrameworkNpgsql()
+                    .AddDbContext<BarbellHeroDbContext>(options =>
+                        options.UseNpgsql(Configuration["Data:DbContext:ConnectionString"]));
+            }
+            else 
+            {
+                var host = Environment.GetEnvironmentVariable("DB_HOST");
+                var database = Environment.GetEnvironmentVariable("DB_NAME");
+                var user = Environment.GetEnvironmentVariable("DB_USER");
+                var port = Environment.GetEnvironmentVariable("DB_PORT");
+                var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
+                services.AddEntityFrameworkNpgsql()
+                    .AddDbContext<BarbellHeroDbContext>(options =>
+                        options.UseNpgsql($"User ID={user};Password={password};Server={host};Port={port};Database={database};"));
+            }
 
             services.AddMvc();
 
@@ -31,6 +50,8 @@ namespace BarbellHero
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddTransient<IMovementRepository, MovementRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,11 +65,6 @@ namespace BarbellHero
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetService<BarbellHeroDbContext>();
-                context.Database.Migrate();
-            }
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -59,6 +75,8 @@ namespace BarbellHero
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
+
+            TypeAdapterConfig.GlobalSettings.Default.IgnoreMember((member, side) => member.Name.Equals("Id"));
 
             app.UseSpa(spa =>
             {

@@ -3,5 +3,5 @@ version: '3.4'
 services:
   web:
     build:
-      context: .
+      context: ./BarbellHero
       dockerfile: ./Dockerfile

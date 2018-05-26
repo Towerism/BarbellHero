@@ -8,11 +8,11 @@ RUN dotnet restore
 
 FROM restore AS build
 COPY . .
-RUN dotnet build -c Release -o /app
+RUN dotnet build BarbellHero.csproj -c Release -o /app
 
 FROM build AS publish
 RUN npm install -g yarn
-RUN dotnet publish -c Release -o /app
+RUN dotnet publish BarbellHero.csproj -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
