@@ -30,21 +30,21 @@ namespace BarbellHero.Controllers
         public IActionResult Post([FromBody] Movement movement)
         {
             _repository.Create(movement);
-            return Ok();
+            return Ok(movement);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             _repository.Delete(id);
-            return Ok();
+            return Ok(id);
         }
 
         [HttpPut("{Id}")]
         public IActionResult Put(int id, [FromBody] Movement movement)
         {
             _repository.Update(id, movement);
-            return Ok();
+            return Ok(movement);
         }
     }
 }

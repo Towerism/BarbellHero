@@ -1,0 +1,15 @@
+<p *ngIf="!movements"><em>Loading...</em></p>
+
+<table class='table' *ngIf="movements">
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let movement of movements">
+      <td>{{ movement.name }}</td>
+      <td>Edit | Delete</td>
+    </tr>
+  </tbody>
+</table>
